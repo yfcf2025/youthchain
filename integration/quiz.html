@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>YouthChain Quiz — YouthForChangeTT</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --purple: #2D1B69;
+    --purple-mid: #4B2FA0;
+    --orange: #FF6B1A;
+    --orange-light: #FF8C42;
+    --cream: #F5F3FF;
+    --white: #FFFFFF;
+    --text: #1A1033;
+    --muted: #6B5F8A;
+    --card-bg: #FFFFFF;
+    --border: #E8E0FF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .quiz-header {
+    background: var(--purple);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--orange); }
+
+  .module-tag {
+    background: var(--orange);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .quiz-hero {
+    background: var(--purple);
+    padding: 32px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quiz-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: var(--purple-mid);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+
+  .quiz-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -20px;
+    width: 150px; height: 150px;
+    background: var(--orange);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  .programme-label {
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .programme-label::before {
+    content: '✦';
+    color: var(--orange);
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title .you { color: var(--orange); font-style: italic; }
+
+  .hero-subtitle {
+    color: #C5B8F0;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: var(--purple-mid);
+    border-bottom: 3px solid var(--orange);
+  }
+
+  .stat-item {
+    padding: 16px 12px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--orange);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #C5B8F0;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* MAIN CONTENT */
+  .quiz-body {
+    padding: 28px 20px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::before {
+    content: '⚡';
+    font-size: 13px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 14px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 2px 12px rgba(45,27,105,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45,27,105,0.1);
+  }
+
+  /* FORM FIELDS */
+  .field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--purple);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--cream);
+    transition: border-color 0.2s;
+    outline: none;
+    margin-bottom: 16px;
+  }
+
+  .field-input:focus {
+    border-color: var(--purple-mid);
+    background: white;
+  }
+
+  /* QUESTION */
+  .question-number {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+
+  .question-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  /* OPTIONS */
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--cream);
+  }
+
+  .option:hover {
+    border-color: var(--purple-mid);
+    background: #F0EBFF;
+  }
+
+  .option input[type="radio"] { display: none; }
+
+  .option-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--purple-mid);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .option input:checked ~ .option-dot {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .option input:checked ~ .option-dot::after {
+    content: '';
+    width: 8px; height: 8px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .option-text {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .option:has(input:checked) {
+    border-color: var(--orange);
+    background: #FFF5EF;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple-mid), var(--orange));
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* RESULT */
+  .result-hero {
+    background: var(--purple);
+    border-radius: 20px;
+    padding: 36px 28px;
+    text-align: center;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: var(--purple-mid);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  .result-emoji {
+    font-size: 52px;
+    margin-bottom: 12px;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-sub {
+    color: #C5B8F0;
+    font-size: 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .token-card {
+    background: var(--orange);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .token-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 8px;
+  }
+
+  .token-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+  }
+
+  .token-symbol {
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .id-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+
+  .id-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .id-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--purple);
+    word-break: break-all;
+  }
+
+  .privacy-note {
+    background: #F0EBFF;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* FOOTER */
+  .quiz-footer {
+    background: var(--purple);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 32px;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .footer-logo span { color: var(--orange); }
+
+  .footer-age {
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card { animation: fadeUp 0.3s ease forwards; }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .token-amount { animation: pop 0.5s ease forwards; }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .quiz-header { padding: 14px 16px; }
+    .logo { font-size: 16px; }
+    .module-tag { font-size: 10px; padding: 3px 10px; }
+    .quiz-hero { padding: 24px 16px 36px; }
+    .hero-title { font-size: 34px; }
+    .hero-subtitle { font-size: 14px; }
+    .stat-value { font-size: 20px; }
+    .stat-label { font-size: 9px; }
+    .stat-item { padding: 12px 8px; }
+    .quiz-body { padding: 20px 12px; }
+    .card { padding: 16px 14px; }
+    .question-text { font-size: 15px; }
+    .option-text { font-size: 14px; }
+    .option { padding: 10px 12px; gap: 10px; }
+    .result-hero { padding: 24px 16px; }
+    .result-title { font-size: 24px; }
+    .token-amount { font-size: 42px; }
+    .token-card { padding: 20px 16px; }
+    .btn-primary { font-size: 14px; padding: 13px 20px; }
+    .quiz-footer { padding: 14px 16px; }
+    .footer-logo { font-size: 14px; }
+    .id-card { padding: 14px 16px; }
+    .id-value { font-size: 15px; }
+  }
+
+  @media (max-width: 360px) {
+    .hero-title { font-size: 28px; }
+    .token-amount { font-size: 36px; }
+    .stat-value { font-size: 17px; }
+    .result-title { font-size: 20px; }
+  }
+
+  @media (min-width: 768px) {
+    .quiz-hero { padding: 48px 40px 64px; }
+    .hero-title { font-size: 58px; }
+    .quiz-body { padding: 36px 28px; }
+    .card { padding: 28px 30px; }
+    .question-text { font-size: 18px; }
+    .option-text { font-size: 16px; }
+    .token-amount { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="quiz-header">
+  <div class="logo">Youth<span>For</span>ChangeTT</div>
+  <div class="module-tag">YouthChain Quiz</div>
+</div>
+
+<!-- HERO -->
+<div class="quiz-hero">
+  <div class="programme-label">Programme Modules</div>
+  <div class="hero-title">
+    <span class="you">YOU</span>th<br>
+    Empowerment<br>
+    &amp; Development
+  </div>
+  <div class="hero-subtitle">
+    Complete the quiz, earn Change Tokens and unlock your verified achievement on the blockchain.
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-value">5</span>
+    <span class="stat-label">Questions</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">FREE</span>
+    <span class="stat-label">To Join</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">14–25</span>
+    <span class="stat-label">Age Group</span>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="quiz-body">
+
+  <!-- ALREADY SUBMITTED BLOCK -->
+  <div id="section-already-done" class="hidden">
+    <div class="card" style="text-align:center; border-color: var(--orange);">
+      <div style="font-size:42px; margin-bottom:12px;">&#10003;</div>
+      <div style="font-family:'Syne',sans-serif; font-size:22px; font-weight:800;
+        color:var(--purple); margin-bottom:8px;">Already Completed</div>
+      <div style="color:var(--muted); font-size:15px; line-height:1.6;">
+        You have already submitted this quiz. Each youth can only submit once
+        to keep our results fair and accurate.<br><br>
+        Your achievement is permanently recorded on the blockchain.
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME / CONFIRM -->
+  <div id="section-register">
+    <div class="section-label">Your Profile</div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px;">
+        <div style="width:48px; height:48px; background:var(--purple);
+          border-radius:50%; display:flex; align-items:center;
+          justify-content:center; font-size:22px; flex-shrink:0;">&#128100;</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif; font-size:18px;
+            font-weight:800; color:var(--purple);" id="display-name">Loading...</div>
+          <div style="font-size:13px; color:var(--muted);" id="display-email"></div>
+        </div>
+      </div>
+
+      <div style="background:var(--cream); border-radius:10px;
+        padding:14px 16px; margin-bottom:20px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:1.5px;
+          text-transform:uppercase; color:var(--muted); margin-bottom:4px;">
+          School / Institution
+        </div>
+        <div style="font-size:15px; font-weight:600; color:var(--text);"
+          id="display-school">&#8212;</div>
+      </div>
+
+      <div style="background:#FFF5EF; border:1.5px solid var(--orange);
+        border-radius:10px; padding:12px 16px; margin-bottom:20px;
+        font-size:13px; color:var(--text); line-height:1.5;">
+        &#9889; <strong>One submission per account.</strong> Your result will be
+        permanently recorded. Make sure you are ready before starting.
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">
+        Start Quiz &#8594;
+      </button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="section-quiz" class="hidden">
+
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span id="progress-label">Question 1 of 5</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="section-label">Quiz Questions</div>
+
+    <!-- Q1 -->
+    <div class="card" id="q-block-1">
+      <div class="question-number">Module 1 · Question 1</div>
+      <div class="question-text">What does SDG stand for?</div>
+      <label class="option">
+        <input type="radio" name="q1" value="a" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Sustainable Development Goals</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q1" value="b" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Social Development Guidelines</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q1" value="c" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Strategic Development Groups</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q1" value="d" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Standard Development Goals</span>
+      </label>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card" id="q-block-2">
+      <div class="question-number">Module 1 · Question 2</div>
+      <div class="question-text">How many Sustainable Development Goals are there?</div>
+      <label class="option">
+        <input type="radio" name="q2" value="a" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">10</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q2" value="b" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">17</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q2" value="c" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">20</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q2" value="d" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">15</span>
+      </label>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card" id="q-block-3">
+      <div class="question-number">Module 2 · Question 3</div>
+      <div class="question-text">True or False: Climate change only affects developed countries.</div>
+      <label class="option">
+        <input type="radio" name="q3" value="a" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">True</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q3" value="b" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">False</span>
+      </label>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card" id="q-block-4">
+      <div class="question-number">Module 2 · Question 4</div>
+      <div class="question-text">Which of these is a sign of good mental health?</div>
+      <label class="option">
+        <input type="radio" name="q4" value="a" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Isolating yourself from others</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q4" value="b" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Seeking help when you need it</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q4" value="c" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Ignoring your emotions</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q4" value="d" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">Avoiding all stress</span>
+      </label>
+    </div>
+
+    <!-- Q5 -->
+    <div class="card" id="q-block-5">
+      <div class="question-number">Module 3 · Question 5</div>
+      <div class="question-text">True or False: Every young person has the right to education.</div>
+      <label class="option">
+        <input type="radio" name="q5" value="a" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">True</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="q5" value="b" onchange="updateProgress()" />
+        <div class="option-dot"></div>
+        <span class="option-text">False</span>
+      </label>
+    </div>
+
+    <button class="btn-primary" onclick="submitQuiz()">Submit Quiz →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="section-result" class="hidden">
+
+    <div class="result-hero">
+      <span class="result-emoji" id="result-emoji">🏆</span>
+      <div class="result-title" id="result-title">Quiz Complete!</div>
+      <div class="result-sub" id="result-sub">You scored <strong id="score-display"></strong> out of 5</div>
+    </div>
+
+    <div class="token-card">
+      <div class="token-label">Change Tokens Earned</div>
+      <div class="token-amount" id="token-display">0</div>
+      <div class="token-symbol">CHG Tokens</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-label">Your Blockchain Achievement ID</div>
+      <div class="id-value" id="anon-id-display">Generating...</div>
+    </div>
+
+    <div class="privacy-note">
+      🔒 Your personal data is stored securely off-chain.<br>
+      Only your anonymous achievement ID is recorded on the Polygon blockchain.
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="quiz-footer">
+  <div class="footer-logo">Youth<span>For</span>ChangeTT</div>
+  <div class="footer-age">Ages 14–25</div>
+</div>
+
+<script>
+  var WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwXiwjp8zSCdQ_VxqpfZGOWvP9W1jl0uuvUTl8p01LBn7dgTOpDVQdNkOnCvFrC83d_ag/exec";
+
+  var correctAnswers = { q1:"a", q2:"b", q3:"b", q4:"b", q5:"a" };
+  var totalQuestions = 5;
+
+  function startQuiz() {
+    var name   = document.getElementById("youth-name").value.trim();
+    var email  = document.getElementById("youth-email").value.trim();
+    var age    = document.getElementById("youth-age").value;
+    var school = document.getElementById("youth-school").value.trim();
+
+    if (!name || !email || !age || !school) {
+      alert("Please fill in all fields before starting.");
+      return;
+    }
+
+    document.getElementById("section-register").classList.add("hidden");
+    document.getElementById("section-quiz").classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function updateProgress() {
+    var answered = 0;
+    for (var q in correctAnswers) {
+      if (document.querySelector('input[name="' + q + '"]:checked')) answered++;
+    }
+    var pct = Math.round((answered / totalQuestions) * 100);
+    document.getElementById("progress-fill").style.width = pct + "%";
+    document.getElementById("progress-pct").textContent = pct + "%";
+    document.getElementById("progress-label").textContent =
+      "Question " + answered + " of " + totalQuestions;
+  }
+
+  function submitQuiz() {
+    var score = 0;
+    for (var q in correctAnswers) {
+      var sel = document.querySelector('input[name="' + q + '"]:checked');
+      if (sel && sel.value === correctAnswers[q]) score++;
+    }
+
+    var payload = {
+      name:        document.getElementById("youth-name").value,
+      email:       document.getElementById("youth-email").value,
+      ageGroup:    document.getElementById("youth-age").value,
+      school:      document.getElementById("youth-school").value,
+      score:       score,
+      tokensEarned: (score === 5 ? (score * 0.1 + 0.5).toFixed(1) : (score * 0.1).toFixed(1))
+    };
+
+    // Show result immediately
+    showResult(score, "YFC-PENDING");
+
+    // Send to Google Sheets
+    fetch(WEBHOOK_URL, { method: "POST", body: JSON.stringify(payload) })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById("anon-id-display").textContent =
+          data.anonymousId || "YFC-RECORDED";
+      })
+      .catch(function() {
+        document.getElementById("anon-id-display").textContent = "YFC-OFFLINE";
+      });
+  }
+
+  function showResult(score, anonId) {
+    document.getElementById("section-quiz").classList.add("hidden");
+    document.getElementById("section-result").classList.remove("hidden");
+    document.getElementById("score-display").textContent = score;
+    document.getElementById("token-display").textContent = score === 5 ? (score * 0.1 + 0.5).toFixed(1) : (score * 0.1).toFixed(1);
+    document.getElementById("anon-id-display").textContent = anonId;
+
+    var emoji = "🌱";
+    var title = "Good Effort!";
+    if (score === 5) { emoji = "🏆"; title = "Perfect Score!"; }
+    else if (score >= 4) { emoji = "🔥"; title = "Excellent Work!"; }
+    else if (score >= 3) { emoji = "⭐"; title = "Great Job!"; }
+
+    document.getElementById("result-emoji").textContent = emoji;
+    document.getElementById("result-title").textContent = title;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+
+</body>
+</html>
